@@ -1,0 +1,36 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = env("DB_PROVIDER") // "sqlite" or "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Signal {
+  id        String   @id @default(cuid())
+  source    String
+  symbol    String
+  side      String    // "long" | "short" | etc.
+  price     Float?
+  strength  Float?
+  meta      Json?
+  createdAt DateTime @default(now())
+}
+
+model Wallet {
+  id        String   @id @default(cuid())
+  name      String
+  balance   Float?
+  currency  String?  // e.g., "USDT"
+  meta      Json?
+  createdAt DateTime @default(now())
+}
+
+model LogEntry {
+  id        String   @id @default(cuid())
+  level     String   // "info" | "warn" | "error"
+  message   String
+  context   Json?
+  createdAt DateTime @default(now())
+}
